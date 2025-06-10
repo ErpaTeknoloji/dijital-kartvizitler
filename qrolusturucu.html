@@ -153,6 +153,7 @@
         <div class="qr-container">
             <div id="qrcode"></div>
         </div>
+        <button class="btn" onclick="generateFromButton()">🚀 QR Kod Olustur</button>
         <button class="btn" onclick="downloadQR()">📥 QR Kod Indir</button>
         <button class="btn" onclick="clearQR()">🗑️ Temizle</button>
     </div>
@@ -314,6 +315,22 @@
             notification.textContent = msg;
             notification.classList.add('show');
             setTimeout(() => { notification.classList.remove('show'); }, 3000);
+        }
+        function generateFromButton() {
+            const type = document.getElementById('qrType').value;
+            switch(type) {
+                case 'email':
+                    generateEmailQR();
+                    break;
+                case 'sms':
+                    generateSMSQR();
+                    break;
+                case 'wifi':
+                    generateWiFiQR();
+                    break;
+                default:
+                    generateQR();
+            }
         }
         updateInputs();
     </script>
