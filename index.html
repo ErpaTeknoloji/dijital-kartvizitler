@@ -1,1 +1,86 @@
-
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dijital Kartvizitler - Ekip Üyeleri</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            text-align: center; 
+            color: #2c3e50; 
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+        .card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card h3 { color: white; margin-bottom: 10px; font-size: 1.5em; }
+        .card p { color: rgba(255,255,255,0.8); margin-bottom: 20px; }
+        .card a { 
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .card a:hover { 
+            background: #f8f9fa;
+            transform: scale(1.05);
+        }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Ekip Üyeleri</h1>
+        <div class="grid">
+            <div class="card">
+                <h3>Nihat ERDAL</h3>
+                <p>Kurucu, ERPA TEKNOLOJİ</p>
+                <a href="./nihat-erdal/">Kartviziti Görüntüle</a>
+            </div>
+            <div class="card">
+                <h3>Mehmet YILMAZ</h3>
+                <p>Yazılım Geliştirici</p>
+                <a href="./mehmet-yilmaz/">Kartviziti Görüntüle</a>
+            </div>
+            <div class="card">
+                <h3>Ayşe KAYA</h3>
+                <p>Tasarım Uzmanı</p>
+                <a href="./ayse-kaya/">Kartviziti Görüntüle</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
