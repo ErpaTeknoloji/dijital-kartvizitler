@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nihat Erdal - Dijital Kartvizit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #d69404;
+      --secondary-color: #c50b0b;
+      --accent-color: #e94560;
+      --accent-light: #ce8b1f;
+      --text-primary: #ffffff;
+      --text-secondary: #b8b8b8;
+      --text-dark: #2c3e50;
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --card-bg: #ffffff;   
+      --border-radius: 20px;
+      --shadow-primary: 0 20px 60px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 30px 80px rgba(0, 0, 0, 0.15);
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 450px;
+      width: 100%;
+      position: relative;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-primary);
+      overflow: hidden;
+      animation: slideUp 0.8s ease-out;
+      transition: var(--transition);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    @keyframes slideUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(60px) scale(0.95); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+      }
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .profile-section {
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      object-fit: cover;
+      margin-bottom: 20px;
+      transition: var(--transition);
+      box-shadow: 0 10px 30px rgba(255, 153, 0, 0.3);
+    }
+
+    .profile-image:hover {
+      transform: scale(1.05);
+      border-color: var(--accent-color);
+    }
+
+    .name {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .job-title {
+      font-size: 16px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+
+    .company {
+      font-size: 14px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .company-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .company-logo {
+      max-height: 60px;
+      max-width: 200px;
+      object-fit: contain;
+      transition: var(--transition);
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+
+    .company-logo:hover {
+      transform: scale(1.05);
+    }
+
+    .contact-info {
+      padding: 30px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 12px;
+      transition: var(--transition);
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .contact-item:hover {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-color: var(--accent-color);
+      transform: translateX(5px);
+    }
+
+    .contact-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+    }
+
+    .contact-icon i {
+      color: white;
+      font-size: 18px;
+    }
+
+    .contact-item:hover .contact-icon {
+      transform: scale(1.1);
+      box-shadow: 0 6px 16px rgba(233, 69, 96, 0.4);
+    }
+
+    .contact-details {
+      flex: 1;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      color: #6c757d;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .contact-value {
+      font-size: 15px;
+      color: var(--text-dark);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .contact-value a {
+      color: var(--text-dark);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .contact-value a:hover {
+      color: var(--accent-color);
+    }
+
+    .action-buttons {
+      padding: 0 30px 30px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(233, 69, 96, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--text-dark);
+      border: 2px solid #e9ecef;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .social-links {
+      padding: 20px 30px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-link {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e9ecef;
+    }
+
+    .social-link:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .social-link.linkedin {
+      color: #0077b5;
+    }
+
+    .social-link.linkedin:hover {
+      background: #0077b5;
+      color: white;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+      transform: translateX(400px);
+      transition: var(--transition);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+
+      .header {
+        padding: 30px 20px;
+      }
+
+      .profile-image {
+        width: 100px;
+        height: 100px;
+      }
+
+      .name {
+        font-size: 24px;
+      }
+
+      .contact-info {
+        padding: 20px;
+      }
+
+      .contact-item {
+        padding: 12px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        padding: 0 20px 20px;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .social-links {
+        padding: 15px 20px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .contact-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .contact-icon i {
+        font-size: 16px;
+      }
+
+      .contact-value {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="profile-section">
+          <img src="https://media.licdn.com/dms/image/v2/C4D03AQFiRJbWN5BaEw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1539511533649?e=1755129600&v=beta&t=P-r0CWIxRw2QyikeT4zncHxe5tKb9DyFa3MWDqQxWi4" alt="Nihat Erdal" class="profile-image">
+          <h1 class="name">Nihat ERDAL</h1>
+          <div class="job-title">Kurucu</div>
+          <div class="company">ERPA TEKNOLOJİ</div>
+        </div>
+      </div>
+
+      <div class="company-section">
+        <img src="https://ideacdn.net/idea/co/01/themes/selftpl_623ad57739d62/assets/uploads/logo.png?revision=1748956613" alt="Erpa Teknoloji" class="company-logo">
+      </div>
+
+      <div class="contact-info">
+        <div class="contact-item" onclick="makeCall()">
+          <div class="contact-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="contact-details">
+            <div class="contact-label">Telefon</div>
+            <div class="contact-value">
+              <a href="tel:+902122935826">(0212) 293 58 26</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-item" onclick="sendEmail()">
+          <div class="contact-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="contact-details">
+            <div class="contact-label">E-posta</div>
+            <div class="contact-value">
+              <a href="mailto:nerdal@erpateknoloji.com">nerdal@erpateknoloji.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-item" onclick="openWebsite()">
+          <div class="contact-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <div class="contact-details">
+            <div class="contact-label">Web Sitesi</div>
+            <div class="contact-value">
+              <a href="https://erpateknoloji.com" target="_blank">erpateknoloji.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-item" onclick="openMaps()">
+          <div class="contact-icon">
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+          <div class="contact-details">
+            <div class="contact-label">Adres</div>
+            <div class="contact-value">Halkalı Merkez, Basın Ekspres Cd. No:25 D:1 A Kat 2, 34303 Küçükçekmece/İstanbul</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="addToContacts()">
+          <i class="fas fa-address-book"></i>
+          Rehbere Ekle
+        </button>
+        <button class="btn btn-secondary" onclick="shareCard()">
+          <i class="fas fa-share-alt"></i>
+          Paylaş
+        </button>
+      </div>
+
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/nihat-erdal-82835545/" target="_blank" class="social-link linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    <span id="notificationText"></span>
+  </div>
+
+  <script>
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      notificationText.textContent = message;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    function addToContacts() {
+      const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:Nihat ERDAL
+ORG:ERPA TEKNOLOJİ
+TITLE:Kurucu
+TEL;TYPE=WORK,VOICE:+902122935826
+EMAIL;TYPE=WORK:nerdal@erpateknoloji.com
+URL;TYPE=WORK:https://erpateknoloji.com
+ADR;TYPE=WORK:;;Halkalı Merkez\\, Basın Ekspres Cd. No:25 D:1 A Kat 2;Küçükçekmece;İstanbul;34303;Türkiye
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/nihat-erdal-82835545/
+PHOTO;ENCODING=b;TYPE=JPEG:https://media.licdn.com/dms/image/v2/C4D03AQFiRJbWN5BaEw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1539511533649?e=1755129600&v=beta&t=P-r0CWIxRw2QyikeT4zncHxe5tKb9DyFa3MWDqQxWi4
+END:VCARD`;
+
+      const blob = new Blob([vCard], { type: 'text/vcard' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'nihat_erdal_contact.vcf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      showNotification('Kişi bilgileri indirildi! Rehbere eklemek için dosyayı açın.');
+    }
+
+    function shareCard() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Nihat ERDAL - Dijital Kartvizit',
+          text: 'Nihat ERDAL - Kurucu, ERPA TEKNOLOJİ',
+          url: window.location.href
+        }).then(() => {
+          showNotification('Kartvizit başarıyla paylaşıldı!');
+        }).catch(() => {
+          fallbackShare();
+        });
+      } else {
+        fallbackShare();
+      }
+    }
+
+    function fallbackShare() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          showNotification('Kartvizit linki panoya kopyalandı!');
+        });
+      } else {
+        showNotification('Paylaşım özelliği desteklenmiyor.');
+      }
+    }
+
+    function makeCall() {
+      window.open('tel:+902122935826');
+    }
+
+    function sendEmail() {
+      window.open('mailto:nerdal@erpateknoloji.com?subject=İletişim&body=Merhaba Nihat Bey,');
+    }
+
+    function openWebsite() {
+      window.open('https://erpateknoloji.com', '_blank');
+    }
+
+    function openMaps() {
+      const address = encodeURIComponent('Halkalı Merkez, Basın Ekspres Cd. No:25 D:1 A Kat 2, 34303 Küçükçekmece/İstanbul');
+      window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
+    }
+
+    // Sayfa yüklendiğinde animasyonları başlat
+    document.addEventListener('DOMContentLoaded', function() {
+      const card = document.querySelector('.card');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(60px) scale(0.95)';
+      
+      setTimeout(() => {
+        card.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0) scale(1)';
+      }, 100);
+    });
+
+    // Tıklama efektleri için ripple animasyonu
+    document.querySelectorAll('.btn, .contact-item').forEach(element => {
+      element.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}px;
+          top: ${y}px;
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple 0.6s ease-out;
+          pointer-events: none;
+        `;
+        
+        const rippleContainer = this.style.position === 'relative' ? this : (() => {
+          this.style.position = 'relative';
+          this.style.overflow = 'hidden';
+          return this;
+        })();
+        
+        rippleContainer.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+
+    
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
